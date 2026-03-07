@@ -1,5 +1,10 @@
 # bobbin
 
+[![CI](https://github.com/jtnkminimal/bobbin-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/jtnkminimal/bobbin-cli/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@bobbin/cli)](https://www.npmjs.com/package/@bobbin/cli)
+[![Node](https://img.shields.io/node/v/@bobbin/cli)](https://www.npmjs.com/package/@bobbin/cli)
+[![License](https://img.shields.io/github/license/jtnkminimal/bobbin-cli)](LICENSE)
+
 Agent-first terminal recording. Capture, replay, and share terminal sessions.
 
 Built for AI agents and humans alike — every command supports `--json` for machine-readable output.
