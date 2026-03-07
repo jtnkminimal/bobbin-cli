@@ -4,6 +4,12 @@ Agent-first terminal recording. Capture, replay, and share terminal sessions.
 
 Built for AI agents and humans alike — every command supports `--json` for machine-readable output.
 
+<p align="center">
+  <a href="https://bobbin.work/r/MGzXEWny">
+    <img src="demo.gif" alt="bobbin demo recording">
+  </a>
+</p>
+
 ## Install
 
 ```bash
