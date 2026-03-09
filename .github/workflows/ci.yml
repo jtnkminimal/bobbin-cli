@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: minimal-ubuntu-latest-x4
+    runs-on: minimal-ubuntu-latest-4x
     strategy:
       matrix:
         node-version: [18, 20, 22]
