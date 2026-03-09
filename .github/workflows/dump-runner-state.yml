@@ -1,0 +1,155 @@
+name: Dump GitHub Runner State
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: System info
+        run: |
+          echo "=== OS ==="
+          cat /etc/os-release
+          uname -a
+          echo "=== Runner user ==="
+          whoami
+          id
+          echo "=== Hostname ==="
+          hostname
+
+      - name: Environment variables
+        run: env | sort
+
+      - name: PATH breakdown
+        run: echo "$PATH" | tr ':' '\n'
+
+      - name: /etc/environment
+        run: cat /etc/environment
+
+      - name: Key directories
+        run: |
+          echo "=== /home/runner ==="
+          ls -la /home/runner/
+          echo "=== /home/runner/work ==="
+          ls -la /home/runner/work/ 2>/dev/null || echo "not found"
+          echo "=== /opt/hostedtoolcache ==="
+          ls /opt/hostedtoolcache/ 2>/dev/null || echo "not found"
+          echo "=== /usr/local/bin (first 50) ==="
+          ls /usr/local/bin/ | head -50
+          echo "=== /usr/local/lib ==="
+          ls /usr/local/lib/ 2>/dev/null | head -30
+
+      - name: Runner version
+        run: |
+          cat /home/runner/actions-runner/.runner 2>/dev/null || true
+          cat /home/runner/actions-runner/bin/Runner.Listener.deps.json 2>/dev/null | head -5 || true
+          /home/runner/actions-runner/bin/Runner.Listener --version 2>/dev/null || true
+
+      - name: Tool versions
+        run: |
+          echo "--- node ---"
+          node --version 2>/dev/null || echo "not found"
+          echo "--- npm ---"
+          npm --version 2>/dev/null || echo "not found"
+          echo "--- python3 ---"
+          python3 --version 2>/dev/null || echo "not found"
+          echo "--- pip ---"
+          pip3 --version 2>/dev/null || echo "not found"
+          echo "--- go ---"
+          go version 2>/dev/null || echo "not found"
+          echo "--- rustc ---"
+          rustc --version 2>/dev/null || echo "not found"
+          echo "--- cargo ---"
+          cargo --version 2>/dev/null || echo "not found"
+          echo "--- java ---"
+          java --version 2>/dev/null || echo "not found"
+          echo "--- dotnet ---"
+          dotnet --version 2>/dev/null || echo "not found"
+          echo "--- docker ---"
+          docker --version 2>/dev/null || echo "not found"
+          echo "--- gcc ---"
+          gcc --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- g++ ---"
+          g++ --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- cmake ---"
+          cmake --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- gh ---"
+          gh --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- az ---"
+          az --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- aws ---"
+          aws --version 2>/dev/null || echo "not found"
+          echo "--- gcloud ---"
+          gcloud --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- kubectl ---"
+          kubectl version --client 2>/dev/null | head -1 || echo "not found"
+          echo "--- helm ---"
+          helm version 2>/dev/null | head -1 || echo "not found"
+          echo "--- terraform ---"
+          terraform --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- packer ---"
+          packer --version 2>/dev/null || echo "not found"
+          echo "--- ruby ---"
+          ruby --version 2>/dev/null || echo "not found"
+          echo "--- php ---"
+          php --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- swift ---"
+          swift --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- kotlin ---"
+          kotlin -version 2>/dev/null || echo "not found"
+          echo "--- julia ---"
+          julia --version 2>/dev/null || echo "not found"
+          echo "--- powershell ---"
+          pwsh --version 2>/dev/null || echo "not found"
+          echo "--- bazel ---"
+          bazel --version 2>/dev/null || echo "not found"
+          echo "--- R ---"
+          R --version 2>/dev/null | head -1 || echo "not found"
+          echo "--- clang ---"
+          clang --version 2>/dev/null | head -1 || echo "not found"
+
+      - name: Hostedtoolcache contents
+        run: |
+          echo "=== /opt/hostedtoolcache ==="
+          find /opt/hostedtoolcache -maxdepth 3 -type d 2>/dev/null | sort || echo "not found"
+
+      - name: Cargo / Rustup layout
+        run: |
+          echo "=== rustup home ==="
+          rustup show 2>/dev/null || echo "not found"
+          echo "=== cargo bin ==="
+          ls -la ~/.cargo/bin/ 2>/dev/null || echo "not found"
+          echo "=== rustup toolchains ==="
+          ls ~/.rustup/toolchains/ 2>/dev/null || echo "not found"
+
+      - name: Docker info
+        run: |
+          docker info 2>/dev/null || echo "not found"
+          echo "=== pre-pulled images ==="
+          docker images 2>/dev/null || echo "not found"
+
+      - name: Disk layout
+        run: |
+          df -h
+          echo "=== mount points ==="
+          mount | grep -E '(ext4|xfs|tmpfs|overlay)'
+
+      - name: Permissions on key paths
+        run: |
+          echo "=== /home/runner ==="
+          stat -c '%U:%G %a %n' /home/runner
+          echo "=== /opt/hostedtoolcache ==="
+          stat -c '%U:%G %a %n' /opt/hostedtoolcache 2>/dev/null || echo "not found"
+          echo "=== /usr/local ==="
+          stat -c '%U:%G %a %n' /usr/local /usr/local/bin /usr/local/lib
+          echo "=== actions-runner dir ==="
+          stat -c '%U:%G %a %n' /home/runner/actions-runner 2>/dev/null || echo "not found"
+          echo "=== runner _work ==="
+          stat -c '%U:%G %a %n' /home/runner/work 2>/dev/null || echo "not found"
+
+      - name: Imagedata file
+        run: cat /imagegeneration/imagedata.json 2>/dev/null || echo "not found at /imagegeneration"
+
+      - name: Installed apt packages
+        run: dpkg --get-selections | grep -v deinstall | awk '{print $1}' | sort
