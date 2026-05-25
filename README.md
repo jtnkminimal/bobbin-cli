@@ -2,8 +2,13 @@
 
 [![CI](https://github.com/jtnkminimal/bobbin-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/jtnkminimal/bobbin-cli/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@bobbin/cli)](https://www.npmjs.com/package/@bobbin/cli)
+[![downloads/month](https://img.shields.io/npm/dm/@bobbin/cli)](https://www.npmjs.com/package/@bobbin/cli)
+[![total downloads](https://img.shields.io/npm/dt/@bobbin/cli)](https://www.npmjs.com/package/@bobbin/cli)
+[![install size](https://packagephobia.com/badge?p=@bobbin/cli)](https://packagephobia.com/result?p=@bobbin/cli)
 [![Node](https://img.shields.io/node/v/@bobbin/cli)](https://www.npmjs.com/package/@bobbin/cli)
 [![License](https://img.shields.io/github/license/jtnkminimal/bobbin-cli)](LICENSE)
+[![last commit](https://img.shields.io/github/last-commit/jtnkminimal/bobbin-cli)](https://github.com/jtnkminimal/bobbin-cli/commits)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/jtnkminimal/bobbin-cli/pulls)
 
 Agent-first terminal recording. Capture, replay, and share terminal sessions.
 
