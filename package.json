@@ -1,6 +1,6 @@
 {
   "name": "@bobbin/cli",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Agent-first terminal recording",
   "type": "module",
   "bin": {
@@ -14,14 +14,14 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "commander": "^12.0"
+    "commander": "^12.1.0"
   },
   "optionalDependencies": {
     "node-pty": "^1.0"
   },
   "devDependencies": {
-    "@types/node": "^22",
+    "@types/node": "^22.19.19",
     "tsup": "^8.0",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }
