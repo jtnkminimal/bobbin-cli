@@ -1,6 +1,6 @@
 {
   "name": "@bobbin/cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Agent-first terminal recording",
   "type": "module",
   "bin": {
