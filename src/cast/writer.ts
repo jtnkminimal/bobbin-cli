@@ -19,14 +19,14 @@ const REDACT_PATTERNS = [
   /(gh[pos]_)[A-Za-z0-9_]{36,}/g,
   /(github_pat_)[A-Za-z0-9_]{22,}/g,
   // Basic auth in URLs: https://user:pass@host
-  /(https?:\/\/[^:]+:)[^@]+(@)/g,
+  /(https?:\/\/[^:@\/\s]+:)[^@\s]+(?=@)/g,
   // Private key blocks
-  /(-----BEGIN\s+\w*\s*PRIVATE KEY-----).+?(-----END)/gs,
+  /(-----BEGIN\s+\w*\s*PRIVATE KEY-----)[\s\S]+?(?=-----END)/g,
   // Connection strings with passwords: postgres://user:pass@, mongodb://user:pass@
-  /((?:postgres|mysql|mongodb|redis|amqp)(?:ql)?:\/\/[^:]*:)[^@]+(@)/g,
+  /((?:postgres|mysql|mongodb|redis|amqp)(?:ql)?:\/\/[^:@\/\s]*:)[^@\s]+(?=@)/g,
 ]
 
-function redactSensitive(data: string): string {
+export function redactSensitive(data: string): string {
   let result = data
   for (const pattern of REDACT_PATTERNS) {
     result = result.replace(pattern, "$1[REDACTED]")

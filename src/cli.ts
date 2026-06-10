@@ -1,10 +1,12 @@
 import { program } from "commander"
 import { recCommand } from "./commands/rec.js"
 import { playCommand } from "./commands/play.js"
+import { catCommand } from "./commands/cat.js"
 import { uploadCommand } from "./commands/upload.js"
 import { downloadCommand } from "./commands/download.js"
 import { lsCommand } from "./commands/ls.js"
 import { handleError } from "./errors.js"
+import { VERSION } from "./version.js"
 
 process.on("uncaughtException", (err) => {
   handleError(err)
@@ -19,7 +21,7 @@ process.on("unhandledRejection", (err) => {
 program
   .name("bobbin")
   .description("Agent-first terminal recording")
-  .version("0.2.0", "-v, --version")
+  .version(VERSION, "-v, --version")
 
 program
   .command("rec")
@@ -41,6 +43,16 @@ program
   .option("--json", "JSON output for agents")
   .action(async (file: string, opts) => {
     try { await playCommand(file, opts) } catch (e) { handleError(e); process.exit(1) }
+  })
+
+program
+  .command("cat")
+  .description("Print a recording's terminal output as plain text")
+  .argument("<file>", "Cast file, recording ID, or bobbin.work URL")
+  .option("--server <url>", "Bobbin server URL")
+  .option("--json", "JSON output for agents")
+  .action(async (file: string, opts) => {
+    try { await catCommand(file, opts) } catch (e) { handleError(e); process.exit(1) }
   })
 
 program

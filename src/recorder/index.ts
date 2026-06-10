@@ -4,6 +4,7 @@ import { detectBackend } from "./detect.js"
 import { startPtyRecording } from "./pty-recorder.js"
 import { startScriptRecording } from "./script-recorder.js"
 import { getGitContext } from "./git.js"
+import { VERSION } from "../version.js"
 
 export interface RecordOptions {
   outputFile: string
@@ -26,7 +27,7 @@ export async function record(opts: RecordOptions): Promise<RecordResult> {
   const git = getGitContext()
 
   const bobbin: BobbinMeta = {
-    version: "0.1.0",
+    version: VERSION,
     command: opts.command ? [opts.command, ...(opts.args || [])].join(" ") : undefined,
     git_repo: git.repo,
     git_branch: git.branch,

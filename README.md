@@ -57,6 +57,9 @@ bobbin play https://bobbin.work/r/P2fumq1n
 bobbin play bobbin.work/r/P2fumq1n
 bobbin play P2fumq1n
 
+# Read a recording as plain text (no replay, no ANSI codes)
+bobbin cat P2fumq1n
+
 # Upload and share
 bobbin upload ~/.config/bobbin/recordings/bobbin-1709472000000.cast
 
@@ -100,13 +103,30 @@ bobbin play bobbin.work/r/P2fumq1n
 bobbin play https://bobbin.work/r/P2fumq1n
 ```
 
-When given a URL or ID, bobbin fetches the recording from the server, plays it, and cleans up the temporary file automatically.
+When given a URL or ID, bobbin fetches the recording from the server and plays it directly from memory — nothing is written to disk.
 
 | Flag | Description |
 |------|-------------|
 | `-s, --speed <n>` | Playback speed multiplier (default: `1`) |
 | `--server <url>` | Server URL for remote playback (default: `https://bobbin.work`) |
 | `--json` | JSON output |
+
+### `bobbin cat <file | url | id>`
+
+Print a recording's terminal output as plain text — no replay, no timing, no escape codes. Built for agents: an AI agent can't watch a replay, but it can read a transcript.
+
+ANSI escape sequences are stripped, carriage-return overwrites (progress bars, spinners) are resolved to their final state, and backspaces are applied. Full-screen apps (vim, htop) won't reconstruct faithfully — this is for command output, not screen state.
+
+```bash
+bobbin cat session.cast
+bobbin cat P2fumq1n                 # works with remote recordings too
+bobbin cat session.cast --json      # metadata + text in one JSON object
+```
+
+| Flag | Description |
+|------|-------------|
+| `--server <url>` | Server URL for remote recordings (default: `https://bobbin.work`) |
+| `--json` | Emit `{source, title, command, duration, exit_code, git_*, text}` |
 
 ### `bobbin upload <file>`
 
@@ -168,8 +188,9 @@ echo "$result" | jq '.duration'
 # Upload and get URL
 url=$(bobbin upload --json session.cast | jq -r '.url')
 
-# Play a shared recording
-bobbin play P2fumq1n
+# Read a recording as plain text — agents read transcripts, not replays
+bobbin cat P2fumq1n
+bobbin cat session.cast --json | jq -r '.text'
 
 # List recordings as JSON array
 bobbin ls --json | jq '.[].file'
@@ -188,7 +209,8 @@ bobbin rec --json -t "investigating OOM" -- ./debug.sh
 bobbin upload --json /home/user/.config/bobbin/recordings/bobbin-1709472000000.cast
 # => {"url":"https://bobbin.work/r/P2fumq1n","manage":"https://bobbin.work/r/P2fumq1n?key=...","id":"P2fumq1n"}
 
-# Another agent or human plays it back
+# Another agent reads the transcript, a human watches the replay
+bobbin cat P2fumq1n
 bobbin play P2fumq1n
 ```
 
@@ -217,7 +239,7 @@ Bobbin uses [asciicast v2](https://docs.asciinema.org/manual/asciicast/v2/) with
   "height": 40,
   "timestamp": 1709472000,
   "bobbin": {
-    "version": "0.1.0",
+    "version": "0.3.0",
     "command": "npm test",
     "git_repo": "user/project",
     "git_branch": "main",
@@ -266,7 +288,8 @@ All files bobbin creates are locked down:
 | `~/.config/bobbin/` | `0700` | Config directory — owner only |
 | `~/.config/bobbin/recordings/*.cast` | `0600` | Recording files — owner read/write only |
 | `~/.config/bobbin/uploads.json` | `0600` | Upload metadata with management keys |
-| Temporary files during playback | `0600` | Cleaned up after use |
+
+Remote playback (`play`/`cat` with an ID or URL) holds the recording in memory only — no temporary files.
 
 ### What gets recorded
 

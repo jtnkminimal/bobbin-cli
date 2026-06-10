@@ -1,6 +1,6 @@
 {
   "name": "@bobbin/cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Agent-first terminal recording",
   "repository": {
     "type": "git",
@@ -18,7 +18,9 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "node --import tsx --test \"tests/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "commander": "^15.0.0"
@@ -29,6 +31,7 @@
   "devDependencies": {
     "@types/node": "^25.9.2",
     "tsup": "^8.5.1",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }
 }
