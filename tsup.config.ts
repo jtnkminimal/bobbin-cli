@@ -3,7 +3,7 @@ import { defineConfig } from "tsup"
 export default defineConfig({
   entry: ["src/cli.ts"],
   format: ["esm"],
-  target: "node18",
+  target: "node22",
   external: ["node-pty"],
   clean: true,
   dts: false,

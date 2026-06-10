@@ -295,6 +295,6 @@ All commands that contact a server validate the URL scheme (`https://` or `http:
 
 ## Requirements
 
-- Node.js 18+
+- Node.js 22.12+
 - Linux or macOS
 - Optional: `node-pty` for higher-fidelity recording

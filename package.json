@@ -1,6 +1,6 @@
 {
   "name": "@bobbin/cli",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Agent-first terminal recording",
   "repository": {
     "type": "git",
@@ -14,21 +14,21 @@
     "dist"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=22.12"
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "commander": "^12.1.0"
+    "commander": "^15.0.0"
   },
   "optionalDependencies": {
-    "node-pty": "^1.0"
+    "node-pty": "^1.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.19.19",
-    "tsup": "^8.0",
-    "typescript": "^5.9.3"
+    "@types/node": "^25.9.2",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
   }
 }

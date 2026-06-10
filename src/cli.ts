@@ -19,7 +19,7 @@ process.on("unhandledRejection", (err) => {
 program
   .name("bobbin")
   .description("Agent-first terminal recording")
-  .version("0.1.6", "-v, --version")
+  .version("0.2.0", "-v, --version")
 
 program
   .command("rec")
