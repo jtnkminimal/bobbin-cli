@@ -1,6 +1,6 @@
 {
   "name": "@bobbin/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Agent-first terminal recording",
   "repository": {
     "type": "git",
@@ -33,5 +33,8 @@
     "tsup": "^8.5.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   }
 }
