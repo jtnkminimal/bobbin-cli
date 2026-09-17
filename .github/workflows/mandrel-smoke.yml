@@ -1,0 +1,38 @@
+# Mandrel smoke test — not part of CI.
+#
+# The only line that differs from a normal workflow is `runs-on`. Everything
+# else is deliberately trivial: this exists to prove the control plane sees
+# the job, not to test the project.
+#
+# Triggered manually so it never runs on a push or a PR by accident. A job
+# labelled `mandrel` sits queued until a Mandrel runner claims it, and an
+# unattended queued job is a confusing thing to leave in someone's Actions tab.
+name: mandrel smoke
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: mandrel
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Where am I
+        run: |
+          echo "runner:  $RUNNER_NAME"
+          echo "os:      $(uname -a)"
+          echo "cpus:    $(nproc)"
+          echo "free:    $(df -h / | awk 'NR==2{print $4}')"
+
+      - name: Docker works
+        run: |
+          docker version
+          docker run --rm alpine:3 echo "container ran on mandrel"
+
+      - name: Docker build works
+        run: |
+          printf 'FROM alpine:3\nRUN echo layer > /x\nCMD cat /x\n' > Dockerfile.smoke
+          docker build -q -t smoke:1 -f Dockerfile.smoke .
+          docker run --rm smoke:1
